@@ -7,7 +7,7 @@ import "./globals.css";
 const funnel = Funnel_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "ShiftSnap",
+  title: "ScheduleSync",
   description: "Sync your work schedule to Google Calendar",
 };
 
