@@ -9,7 +9,8 @@ import {
   Trash2, 
   LogOut, 
   CheckCircle2, 
-  Camera 
+  Camera,
+  AlertCircle
 } from "lucide-react";
 
 
@@ -27,6 +28,7 @@ function MainContent() {
   const [syncing, setSyncing] = useState(false);
   const [shifts, setShifts] = useState<any[]>([]);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   // 1. Handle File Upload
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +37,7 @@ function MainContent() {
 
     setLoading(true);
     setSuccessMsg(null);
+    setErrorMsg(null);
     setShifts([]);
 
     const reader = new FileReader();
@@ -141,6 +144,21 @@ function MainContent() {
           <div className="bg-green-100 border border-green-200 text-green-800 p-4 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
             <CheckCircle2 className="w-5 h-5" />
             <span className="font-medium">{successMsg}</span>
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {errorMsg && (
+          <div className="bg-amber-100 border border-amber-200 text-amber-800 p-4 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <span className="font-medium flex-1">{errorMsg}</span>
+            <button
+              onClick={() => setErrorMsg(null)}
+              className="p-1 text-amber-600 hover:text-amber-800 hover:bg-amber-200/50 rounded transition-colors"
+              aria-label="Dismiss"
+            >
+              ×
+            </button>
           </div>
         )}
 
