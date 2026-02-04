@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "my-schedule-app",
+      "name": "schedule-sync",
       "dependencies": {
         "@google/generative-ai": "^0.24.1",
         "googleapis": "^170.1.0",

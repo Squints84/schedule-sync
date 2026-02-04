@@ -1,5 +1,5 @@
 {
-  "name": "my-schedule-app",
+  "name": "schedule-sync",
   "version": "0.1.0",
   "private": true,
   "scripts": {

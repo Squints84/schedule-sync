@@ -50,10 +50,30 @@ function MainContent() {
           body: JSON.stringify({ image: base64Image }),
           headers: { "Content-Type": "application/json" },
         });
+
         const data = await res.json();
-        if (data.shifts) setShifts(data.shifts);
+
+        // Handle API/server errors first
+        if (!res.ok || data.error) {
+          setErrorMsg(
+            data?.error ||
+              "We couldn't read any schedule from this photo. Please try again with a clearer shot."
+          );
+          return;
+        }
+
+        // Handle empty or missing shifts
+        if (!Array.isArray(data.shifts) || data.shifts.length === 0) {
+          setErrorMsg(
+            "No schedule data found in this image. Try a clearer photo of your schedule."
+          );
+          return;
+        }
+
+        // Happy path
+        setShifts(data.shifts);
       } catch (err) {
-        alert("Error parsing image. Please try again.");
+        setErrorMsg("Error parsing image. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -147,9 +167,9 @@ function MainContent() {
           </div>
         )}
 
-        {/* Error Banner */}
+        {/* Error Banner (desktop / tablet) */}
         {errorMsg && (
-          <div className="bg-amber-100 border border-amber-200 text-amber-800 p-4 rounded-xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4">
+          <div className="hidden md:flex bg-amber-100 border border-amber-200 text-amber-800 p-4 rounded-xl items-center gap-3 animate-in fade-in slide-in-from-top-4">
             <AlertCircle className="w-5 h-5 flex-shrink-0" />
             <span className="font-medium flex-1">{errorMsg}</span>
             <button
@@ -185,6 +205,14 @@ function MainContent() {
             </span>
           </div>
         </div>
+
+        {/* Compact Error (mobile, just under upload area) */}
+        {errorMsg && (
+          <p className="md:hidden text-sm text-amber-800 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span className="flex-1">{errorMsg}</span>
+          </p>
+        )}
 
         {/* Shift List */}
         {shifts.length > 0 && (
